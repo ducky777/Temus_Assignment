@@ -1,0 +1,6 @@
+model_path: ./data/models/keras/model.17-0.0309.h5
+best_model_url: https://drive.google.com/uc?id=1So4N05mdQ2bBZnZVJT8sIUWenGbPRD1n
+minmax_x_scaler_path: ./data/models/preprocessor/minmax_x.joblib
+minmax_x_scaler_url: https://drive.google.com/uc?id=12pNM3UhOjCKeJenrN7BizZGBWf_y0CIp
+minmax_y_scaler_path: ./data/models/preprocessor/minmax_y.joblib
+minmax_y_scaler_url: https://drive.google.com/uc?id=1iK9o9CM7c_bnSlu83PWi_oxP33D0YEsl
