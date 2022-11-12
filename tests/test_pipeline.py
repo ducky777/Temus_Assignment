@@ -3,8 +3,9 @@ import datetime as dt
 import numpy as np
 import pytest
 import yaml
-from model.data import WindPowerData
-from model.pipeline import WindPowerPipeline
+
+# from model.data import WindPowerData
+# from model.pipeline import WindPowerPipeline
 from model.predictor import WindPowerPredictor
 
 
@@ -16,8 +17,7 @@ def configs():
 
 @pytest.fixture(scope="session")
 def pipeline(configs):
-    stack = [WindPowerData(), WindPowerPredictor(configs)]
-    return WindPowerPipeline(stack)
+    return WindPowerPredictor(configs)
 
 
 def test_wrong_date_format(pipeline):

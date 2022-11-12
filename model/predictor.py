@@ -7,7 +7,7 @@ import joblib
 import numpy as np
 import yaml
 from tensorflow import keras
-
+from .data import WindPowerData
 
 class WindPowerFiles:
     def __init__(self, configs: Union[str, dict]):
@@ -34,7 +34,7 @@ class WindPowerFiles:
             gdown.download(url, path)
 
 
-class WindPowerPredictor(WindPowerFiles):
+class WindPowerPredictor(WindPowerFiles, WindPowerData):
     """Pipeline to store and predict Wind Power"""
 
     def __init__(self, configs: Union[str, dict]):
@@ -44,13 +44,13 @@ class WindPowerPredictor(WindPowerFiles):
           - configs: Union[str, dict]: can be a path to a yaml file or a loaded dict
         """
 
-        self.configs = self.load_configs(configs)
+        self.configs: dict = self.load_configs(configs)
 
         super().__init__(self.configs)
 
-        self.model = self.load_model(self.configs["model_path"])
-        self.minmax_x_scaler = joblib.load(self.configs["minmax_x_scaler_path"])
-        self.minmax_y_scaler = joblib.load(self.configs["minmax_y_scaler_path"])
+        self.model: keras.Model = self.load_model(self.configs["model_path"])
+        self.minmax_x_scaler: object = joblib.load(self.configs["minmax_x_scaler_path"])
+        self.minmax_y_scaler: object = joblib.load(self.configs["minmax_y_scaler_path"])
 
     def load_configs(self, configs):
         if isinstance(configs, str):
@@ -111,7 +111,7 @@ class WindPowerPredictor(WindPowerFiles):
     def predict(
         self,
         x: np.array,
-    ):
+    ) -> np.array:
         """
         date: dt.DateTime or str(YYYYMMDDHH)
         u: zonal
@@ -120,13 +120,15 @@ class WindPowerPredictor(WindPowerFiles):
         wd: wind direction
         """
 
-        x = self.preprocess(*x)
+        x = self.validate(x)
+
+        if len(x.shape) > 1:
+            x = np.array([self.preprocess(*i)[0] for i in x])
+        else:
+            x = self.preprocess(*x)
 
         return self.model.predict(x, verbose=0)
 
-    def __call__(
-        self,
-        x: np.array,
-    ):
+    def __call__(self, x: np.array):
         """Returns self.predict()"""
         return self.predict(x)

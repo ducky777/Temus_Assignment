@@ -32,5 +32,7 @@ class WindPowerData:
             result = [data[k] for k in self.schema.keys()]
             return np.array(result)
 
-    def __call__(self, data: Union[pd.DataFrame, pd.Series, dict]):
+    def __call__(self, data: Union[pd.DataFrame, pd.Series, dict, list]):
+        if isinstance(data, list):
+            return np.array([self.validate(i) for i in data])
         return self.validate(data)
