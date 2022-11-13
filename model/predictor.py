@@ -52,7 +52,8 @@ class WindPowerPredictor(WindPowerFiles, WindPowerData):
         self.minmax_x_scaler: object = joblib.load(self.configs["minmax_x_scaler_path"])
         self.minmax_y_scaler: object = joblib.load(self.configs["minmax_y_scaler_path"])
 
-    def load_configs(self, configs):
+    def load_configs(self, configs: Union[dict, str]):
+        """Loads configs. Can be either a `dict` or `path_to_config_yml`"""
         if isinstance(configs, str):
             with open(configs, "r") as f:
                 return yaml.safe_load(f)

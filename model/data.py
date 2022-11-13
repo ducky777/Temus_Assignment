@@ -19,7 +19,7 @@ class WindPowerData:
         "wd": (float, np.float),
     }
 
-    def validate(self, data: Union[pd.DataFrame, pd.Series, dict]):
+    def __val(self, data: Union[pd.DataFrame, pd.Series, dict]):
         """Loops through data to ensure schema is respected"""
         for k, v in self.schema.items():
             assert k in data.keys(), f"{k} not in data!"
@@ -39,7 +39,10 @@ class WindPowerData:
             result = [data[k] for k in self.schema.keys()]
             return np.array(result)
 
+    def validate(self, data: Union[pd.DataFrame, pd.Series, dict]):
+        if isinstance(data, (list, np.ndarray)):
+            return np.array([self.__val(i) for i in data])
+        return self.__val(data)
+
     def __call__(self, data: Union[pd.DataFrame, pd.Series, dict, list]):
-        if isinstance(data, list):
-            return np.array([self.validate(i) for i in data])
         return self.validate(data)
