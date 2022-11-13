@@ -98,7 +98,6 @@ class WindPowerPredictor(WindPowerFiles, WindPowerData):
         day_of_year_cos = np.cos(2 * np.pi * (date.timetuple().tm_yday / 365))
         wd_cos = np.cos(2 * np.pi * (wd / 360))
 
-        # ["u",	"v",	"ws",	"hour_cos", "doy_cos", "wd_cos", "hors"]
         x = np.array([u, v, ws, hour_cos, day_of_year_cos, wd_cos, hors])
 
         if len(x.shape) == 1:

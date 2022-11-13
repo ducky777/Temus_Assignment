@@ -14,4 +14,6 @@ Run tests
 
 > `pytest tests`
 
+Run with Docker
 
+> `docker-compose up`

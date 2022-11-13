@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+
+  base:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.base
+    image: temus_base
+    ports:
+      - 8080:8080
+    volumes:
+      - '.:/app'
+
+  test:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.test
+    image: temus_test
+    depends_on:
+      - base
+    volumes:
+      - '.:/app'
+
+  app:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.app
+      args:
+        PORT: 8000
+    image: temus_app
+    ports:
+      - 8080:80
+      - 8081:80
+    depends_on:
+      - base
+    volumes:
+      - '.:/app'

@@ -1,0 +1,11 @@
+FROM python:3.8
+
+WORKDIR /code
+
+COPY ./requirements.txt /code/requirements.txt
+COPY ./api /code/api
+COPY ./model /code/model
+COPY ./configs /code/configs
+COPY ./data /code/data
+
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt

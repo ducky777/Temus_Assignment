@@ -1,0 +1,6 @@
+FROM temus_base:latest
+
+WORKDIR /code
+COPY ./tests /code/tests
+
+CMD ["pytest", "--cov-report", "term-missing", "--cov", "app", "tests"]
