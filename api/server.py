@@ -11,6 +11,6 @@ predictor = WindPowerPredictor(configs)
 
 
 @app.post
-def predict(data):
+def predict(data: dict):
     predictions = predictor(data)
     return {"predictions": predictions}
